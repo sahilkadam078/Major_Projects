@@ -98,3 +98,10 @@ body {
     background-color: #fe424d !important;
 }
 
+/* Show Page */
+.show-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}

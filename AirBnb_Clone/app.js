@@ -45,12 +45,22 @@ app.get("/listings/:id", async (req, res) => {
     res.render("listings/show", { listing });
 });
 
-//Create Route
+// Create Route
 app.post("/listings", async (req, res) => {
+
+    // 🔧 DEFAULT IMAGE FIX
+    if (!req.body.listing.image?.url) {
+        req.body.listing.image = {
+            url: "https://images.unsplash.com/photo-1761839257661-c2392c65ea72?q=80&w=1170&auto=format&fit=crop",
+            filename: "listingimage",
+        };
+    }
+
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
 });
+
 
 //Edit Route
 app.get("/listings/:id/edit", async (req, res) => {
@@ -60,7 +70,7 @@ app.get("/listings/:id/edit", async (req, res) => {
 });
 
 //Update Route
-app.put("/listings/:id", async (req,res) => {
+app.put("/listings/:id", async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
