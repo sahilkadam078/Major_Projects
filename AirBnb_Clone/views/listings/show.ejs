@@ -29,7 +29,7 @@
 
                 <li class="list-group-item">
                     <strong>Price:</strong>
-                    ₹ <%= listing.price.toLocaleString("en-IN") %>
+                    ₹ <%= typeof listing.price==="number" ? listing.price.toLocaleString("en-IN") : "N/A" %>
                 </li>
 
                 <li class="list-group-item">

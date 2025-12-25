@@ -6,7 +6,6 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
-// ✅ SAFE MongoDB URL (local + production)
 const MONGO_URL =
   process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -34,9 +33,15 @@ app.get("/", (req, res) => {
 
 // Index
 app.get("/listings", async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index", { allListings });
+  try {
+    const allListings = await Listing.find({});
+    res.render("listings/index", { allListings });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading listings");
+  }
 });
+
 
 // New
 app.get("/listings/new", (req, res) => {
