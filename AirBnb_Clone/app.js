@@ -6,98 +6,86 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// ✅ SAFE MongoDB URL (local + production)
+const MONGO_URL =
+  process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
-    .then(() => console.log("Connected to DB"))
-    .catch(err => console.log(err));
+  .then(() => console.log("Connected to DB"))
+  .catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+  await mongoose.connect(MONGO_URL);
 }
 
+// View engine & middleware
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "public")));
 
+// Home
 app.get("/", (req, res) => {
-    res.redirect("/listings");
+  res.redirect("/listings");
 });
 
-//Index Route
+// Index
 app.get("/listings", async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index", { allListings });
+  const allListings = await Listing.find({});
+  res.render("listings/index", { allListings });
 });
 
-//New Route
+// New
 app.get("/listings/new", (req, res) => {
-    res.render("listings/new.ejs");
+  res.render("listings/new.ejs");
 });
 
-//Show Route
+// Show
 app.get("/listings/:id", async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/show", { listing });
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/show", { listing });
 });
 
-// Create Route
+// Create
 app.post("/listings", async (req, res) => {
+  if (!req.body.listing.image?.url) {
+    req.body.listing.image = {
+      url: "https://images.unsplash.com/photo-1761839257661-c2392c65ea72?q=80&w=1170&auto=format&fit=crop",
+      filename: "listingimage",
+    };
+  }
 
-    // 🔧 DEFAULT IMAGE FIX
-    if (!req.body.listing.image?.url) {
-        req.body.listing.image = {
-            url: "https://images.unsplash.com/photo-1761839257661-c2392c65ea72?q=80&w=1170&auto=format&fit=crop",
-            filename: "listingimage",
-        };
-    }
-
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
+  const newListing = new Listing(req.body.listing);
+  await newListing.save();
+  res.redirect("/listings");
 });
 
-
-//Edit Route
+// Edit
 app.get("/listings/:id/edit", async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/edit.ejs", { listing });
 });
 
-//Update Route
+// Update
 app.put("/listings/:id", async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    res.redirect(`/listings/${id}`);
+  const { id } = req.params;
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  res.redirect(`/listings/${id}`);
 });
 
-//Delete Route
+// Delete
 app.delete("/listings/:id", async (req, res) => {
-    let { id } = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listings");
+  const { id } = req.params;
+  await Listing.findByIdAndDelete(id);
+  res.redirect("/listings");
 });
 
-// app.get("/testListing", async (req, res) => {
-//     const sampleListing = new Listing({
-//         title: "My New Villa",
-//         description: "By the Beach",
-//         price: 1200,
-//         location: "Calangute, Goa",
-//         country: "India",
-//     });
-
-//     await sampleListing.save();
-//     console.log("Sample was saved");
-//     res.send("Successful testing");
-// });
-
-app.listen(8080, () => {
-    console.log("Server is listening on port 8080");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
