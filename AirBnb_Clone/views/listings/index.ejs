@@ -1,30 +1,41 @@
 <% layout("layouts/boilerplate") %>
 
-    <br><br>
-    <h3>All Listings</h3>
+<div class="container mt-4">
+    <h3 class="mb-4">All Listings</h3>
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <div class="row">
         <% for (let listing of allListings) { %>
-            <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
-                <div class="card col mb-4">
 
-                    <img src="<%= listing.image && listing.image.url 
-                ? listing.image.url 
-                : 'https://images.unsplash.com/photo-1568605114967-8130f3a36994' %>" class="card-img-top"
-                        alt="listing image" style="height: 20rem; object-fit: cover;" />
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
 
-                    <div class="card-body">
-                        <p class="card-text">
-                            <b>
+                    <div class="card h-100 shadow-sm">
+
+                        <img 
+                            src="<%= listing.image && listing.image.url 
+                                ? listing.image.url 
+                                : 'https://images.unsplash.com/photo-1568605114967-8130f3a36994' %>" 
+                            class="card-img-top img-fluid"
+                            alt="listing image"
+                            style="height: 220px; object-fit: cover;"
+                        />
+
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">
                                 <%= listing.title %>
-                            </b><br>
-                            &#8377;
-                            <%= typeof listing.price==="number" ? listing.price.toLocaleString("en-IN") : "N/A" %>
-                                / night
-                        </p>
-                    </div>
+                            </h6>
 
-                </div>
-            </a>
-            <% } %>
+                            <p class="card-text text-muted mb-0">
+                                ₹ <%= typeof listing.price === "number" 
+                                    ? listing.price.toLocaleString("en-IN") 
+                                    : "N/A" %> / night
+                            </p>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+        <% } %>
     </div>
+</div>
