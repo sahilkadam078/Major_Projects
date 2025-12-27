@@ -1,21 +1,27 @@
-# AirBnb Clone
+# 🏡 AirBnb Clone (WanderLust)
 
-A full-stack web application that demonstrates real-world backend development, database modeling, and server-side rendering using Node.js and Express.
+A full-stack web application built to demonstrate real-world backend development, database modeling, and server-side rendering using **Node.js, Express, and MongoDB**.
 
-This project focuses on **clean architecture, MVC structure, and scalable folder organization**, inspired by real rental listing platforms.
+This project follows **MVC architecture**, clean folder structure, and scalable backend practices inspired by platforms like Airbnb.
 
 ---
 
 ## 🔗 Live Demo
-👉 https://your-airbnb-clone-demo-link.com  
-*(Replace this with your deployed link)*
+
+👉 **https://airbnb-clone-sahil.onrender.com/listings**
 
 ---
 
 ## 📌 Project Overview
 
-The AirBnb Clone allows users to view and manage property listings with dynamic rendering using EJS templates.  
-It is designed to strengthen backend concepts and full-stack workflow understanding.
+The AirBnb Clone allows users to:
+
+- Browse property listings  
+- View individual listing details  
+- Add new listings  
+- Edit and delete existing listings  
+
+The application uses **server-side rendering with EJS** and stores data in **MongoDB Atlas (Cloud Database)**.
 
 ---
 
@@ -23,18 +29,21 @@ It is designed to strengthen backend concepts and full-stack workflow understand
 
 - Node.js  
 - Express.js  
-- MongoDB (Mongoose)  
+- MongoDB & Mongoose  
 - EJS (Embedded JavaScript Templates)  
 - HTML, CSS, JavaScript  
+- Bootstrap  
+- Render (Deployment)
 
 ---
 
 ## ✨ Key Features
 
-- Property listing creation and display  
-- Dynamic server-side rendering with EJS  
-- MVC-based folder structure  
-- Organized routes, models, and views  
-- Scalable backend design  
+- 🏠 CRUD operations for property listings  
+- 📄 Dynamic server-side rendering using EJS  
+- 🗂️ MVC-based project structure  
+- 🔗 RESTful routing  
+- ☁️ MongoDB Atlas cloud integration  
+- 🚀 Deployed live on Render  
 
 ---
